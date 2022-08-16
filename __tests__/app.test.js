@@ -67,9 +67,47 @@ describe('backend-express-template routes', () => {
     expect(res.body).toEqual(expect.arrayContaining([
       {
         id: expect.any(String),
-        name: expect.any(String),
+        name: expect.any(String), 
         location: expect.any(String)
       }
     ]));
+  });
+  it('#GET /api/v1/restaurants/:id should return a restaurant', async () => {
+    const res = await request(app).get('/api/v1/restaurants/1');
+    expect(res.body).toEqual({
+      id: '1',
+      name: 'Pok Pok',
+      location: 'Portland, OR',
+      reviews: [
+        {
+          id: '1',
+          review: '5',
+          detail: 'this place is great',
+          user_id: '1',
+          restaurant_id: '1'
+        },
+        {
+          id: '2',
+          review: '1',
+          detail: 'this place is not great',
+          user_id: '2',
+          restaurant_id: '1'
+        },
+        {
+          id: '4',
+          review: '1',
+          detail: 'I like it here',
+          user_id: '1',
+          restaurant_id: '1'
+        },
+        {
+          id: '6',
+          review: '4',
+          detail: 'woohoo',
+          user_id: '1',
+          restaurant_id: '1'
+        }
+      ]
+    });
   });
 });
