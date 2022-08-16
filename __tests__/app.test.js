@@ -62,4 +62,14 @@ describe('backend-express-template routes', () => {
     const res = await agent.get('/api/v1/users');
     expect(res.body).toEqual([{ 'email': 'test@test.com', 'id': '1', 'username': 'MR. Test' }, { 'email': 'teeeest@tesasdft.com', 'id': '2', 'username': 'MRasdf. Teasdfst' }, { 'email': 'admin@admin.com', 'id': '3', 'username': 'testUser' }]);
   });
+  it('#GET /api/v1/restaurants should return a list of restaurants', async () => {
+    const res = await request(app).get('/api/v1/restaurants');
+    expect(res.body).toEqual(expect.arrayContaining([
+      {
+        id: expect.any(String),
+        name: expect.any(String),
+        location: expect.any(String)
+      }
+    ]));
+  });
 });

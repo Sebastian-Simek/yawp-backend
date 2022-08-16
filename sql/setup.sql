@@ -2,7 +2,7 @@
 -- The SQL in this file will be executed when you run `npm run setup-db`
 DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS reviews CASCADE;
-DROP TABLE IF EXISTS restuarants CASCADE;
+DROP TABLE IF EXISTS restaurants CASCADE;
 
 CREATE TABLE users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -18,7 +18,7 @@ CREATE TABLE reviews (
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TABLE restuarants(
+CREATE TABLE restaurants(
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     name VARCHAR,
     location VARCHAR,
@@ -35,7 +35,7 @@ VALUES
 ('test@test.com', 'MR. Test', 'not@HasH'),
 ('teeeest@tesasdft.com', 'MRasdf. Teasdfst', 'notasdf@HasH');
 
-INSERT INTO restuarants (
+INSERT INTO restaurants (
     name,
     location
 )
