@@ -35,3 +35,13 @@ VALUES
 ('test@test.com', 'MR. Test', 'not@HasH'),
 ('teeeest@tesasdft.com', 'MRasdf. Teasdfst', 'notasdf@HasH');
 
+INSERT INTO restuarants (
+    name,
+    location
+)
+VALUES
+('Pok Pok', 'Portland, OR'),
+('Luigies', 'San Antonio, TX'),
+('Whataburger', 'Dallas, TX'),
+('Katz', 'New York City, NY')
+

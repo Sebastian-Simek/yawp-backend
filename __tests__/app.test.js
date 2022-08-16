@@ -2,21 +2,21 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
-const UserService = require('../lib/middleware/UserService');
+
 
 const mockUser = {
-  email: 'testemail@test.com',
+  email: 'testing@test.com',
   username: 'testUser',
   password: '123456'
 };
 
 const registerAndLogin = async (userProps = {}) => {
-  const password = userProps.password ?? mockUser.password;
+  const { password, email } = userProps;
   const agent = request.agent(app);
-  const user = await UserService.signUpUser({ ...mockUser, ...userProps });
-  const { email } = user;
+  await agent.post('/api/v1/users').send(userProps);
+  // const [user] = await UserService.signUpUser(userProps);
   await agent.post('/api/v1/users/sessions').send({ email, password });
-  return [agent, user];
+  return [agent];
 };
 
 describe('backend-express-template routes', () => {
@@ -47,11 +47,19 @@ describe('backend-express-template routes', () => {
     expect(res.status).toBe(200);
   });
   it('#GET /api/v1/users should return 403 for unauthorized', async () => {
-    const [agent] = await registerAndLogin();
+    const [agent] = await registerAndLogin(mockUser);
     const res = await agent.get('/api/v1/users');
     expect(res.body).toEqual({
       message: 'You are unauthorized',
       status: 403
     });
+  });
+  it('#GET /api/v1/users should return list of users for admin', async () => {
+    const agent = request.agent(app);
+    await agent.post('/api/v1/users').send({ ...mockUser, email: 'admin@admin.com' });
+    await agent.post('/api/v1/users/sessions').send({ ...mockUser, email: 'admin@admin.com' });
+    
+    const res = await agent.get('/api/v1/users');
+    expect(res.body).toEqual([{ 'email': 'test@test.com', 'id': '1', 'username': 'MR. Test' }, { 'email': 'teeeest@tesasdft.com', 'id': '2', 'username': 'MRasdf. Teasdfst' }, { 'email': 'admin@admin.com', 'id': '3', 'username': 'testUser' }]);
   });
 });
