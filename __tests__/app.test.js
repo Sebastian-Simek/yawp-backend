@@ -29,4 +29,12 @@ describe('backend-express-template routes', () => {
       }
     });
   });
+  it('#POST /api/v1/users/sessions signs in an existing user', async () => {
+    await request(app).post('/api/v1/users')
+      .send(mockUser);
+    const res = await request(app)
+      .post('/api/v1/users/sessions')
+      .send({ username: 'testUser', password: '123456' });
+    expect(res.status).toBe(200);
+  });
 });
