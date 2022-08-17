@@ -5,6 +5,7 @@ const app = require('../lib/app');
 
 
 const mockUser = {
+  id: '1',
   email: 'testing@test.com',
   username: 'testUser',
   password: '123456'
@@ -109,5 +110,20 @@ describe('backend-express-template routes', () => {
         }
       ]
     });
+  });
+  it.only('#POST /api/v1/restaurants/:id/reviews should post a review', async () => {
+    const newReview = {
+      review: 5,
+      detail: 'I hate this project so much'
+    };
+    const agent = request.agent(app);
+    await agent.post('/api/v1/users').send(mockUser);
+    const res = await agent.post('/api/v1/restaurants/2/reviews').send(newReview);
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      ...newReview
+    });
+
   });
 });
